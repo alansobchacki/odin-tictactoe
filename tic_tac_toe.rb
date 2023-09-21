@@ -22,13 +22,14 @@ class SetUpGame
     puts "#{@player_two_name}, please type what symbol you'd like to play with. The default value is 'O'."
     @player_two_symbol = gets.chomp
     puts 'Good luck, everyone!'
+    puts "#{@player_one_name}, please pick a free slot to fill."
   end
 end
 
 # will write documentation later
 class Game
   attr_accessor :game_board, :player_scores, :player_one_scores, :player_one_symbol, :player_two_scores,
-                :player_two_symbol
+                :player_two_symbol, :player_one_name, :player_two_name
 
   def initialize(player_one_symbol, player_two_symbol, player_one_name, player_two_name)
     @winning_scores = [[1, 2, 3], [1, 5, 9], [1, 4, 7], [4, 5, 6], [7, 5, 3], [7, 8, 9], [2, 5, 8], [3, 6, 9]]
@@ -42,7 +43,6 @@ class Game
   end
 
   def multiplayer_match(player, symbol)
-    puts 'Please pick one slot to fill.'
     keypress = gets.chomp.to_i
     if @game_board.include?(keypress) == true
       @game_board.delete_at(keypress - 1)
@@ -58,7 +58,9 @@ class Game
 
   def update_scores(player_one, player_one_symbol, player_two, player_two_symbol)
     until @player_one_scores.length == 5 || @player_two_scores.length == 5
+      puts "#{@player_two_name}, please pick a free slot to fill."
       multiplayer_match(player_two, player_two_symbol)
+      puts "#{@player_one_name}, please pick a free slot to fill."
       if @winning_scores.any? { |winning_combination| (winning_combination - @player_two_scores).empty? }
         puts "#{@player_two_name} wins!"
         break
